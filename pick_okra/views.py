@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import generics, viewsets
 
 from pick_okra.models import Contributor
 from pick_okra.models import Repository
@@ -11,13 +11,23 @@ from pick_okra.serializers import RepositorySerializer
 from pick_okra.serializers import RepositoryInfoSerializer
 from pick_okra.serializers import RepositoryMetricsSerializer
 
-class RepositoryViewSet(viewsets.ModelViewSet):
+class RepositoryViewSet(generics.ListAPIView):
     """
     API endpoint that all repo_id: pallet/flask
+
+    https://www.django-rest-framework.org/api-guide/filtering/
     """
-    queryset = Repository.objects.all()
     serializer_class = RepositorySerializer
-    http_method_names = ['get']
+
+    def get_queryset(self):
+        search = self.kwargs.get('search', '')
+        limit = self.kwargs.get('limit', '')
+
+        if len(search) > 0 and len(limit) > 0:
+            lim = int(limit)
+            return Repository.objects.filter(repo_id=search)[:lim]
+        else:
+            return Repository.objects.all()
 
 class RepositoryMetricsViewSet(viewsets.ModelViewSet):
     """
