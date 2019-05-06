@@ -1,0 +1,147 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: Okra API definition
+    url: https://virtserver.swaggerhub.com/aexvir/Okra/1.0.0
+info:
+  description: Okra repository analysis endpoint
+  version: "1.0.0"
+  title: Okra API
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: developers
+    description: Operations available to regular developers
+paths:
+  /repositories:
+    get:
+      tags:
+        - developers
+      summary: List all the repositories
+      description: |
+        By passing in the appropriate options, you can search for
+        available inventory in the system
+      parameters:
+        - in: query
+          name: search
+          description: pass an optional search string for looking up inventory
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: maximum number of records to return
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+      responses:
+        '200':
+          description: access package or search
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RepositoryInfo'
+        '400':
+          description: bad input parameter
+  /repositories/{id}:
+    get:
+      tags:
+        - developers
+      summary: Gets specific repository details
+      description: |
+        By passing in the appropriate options, you can search for
+        available inventory in the system
+      parameters:
+        - in: path
+          name: id
+          description: repository identifier
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: access package or search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepositoryInfo'
+        '400':
+          description: bad input parameter
+components:
+  schemas:
+    RepositoryInfo:
+      type: object
+      required:
+        - id
+        - name
+        - namespace
+        - firstCommitDate
+        - lastCommitDate
+        - lastCommitHash
+        - contributors
+        - metrics
+      properties:
+        id:
+          type: string
+          format: string
+          example: pallets/flask
+        name:
+          type: string
+          example: flask
+        namespace:
+          type: string
+          example: pallets
+        firstCommitDate:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        contributors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        metrics:
+          type: object
+          $ref: '#/components/schemas/RepositoryMetrics'
+          
+    Contributor:
+      type: object
+      required:
+        - name
+        - projects
+      properties:
+        name:
+          type: string
+          example: John Doe
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Repository'
+          
+    Repository:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: string
+          example: pallets/flask
+          
+    RepositoryMetrics:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: string
+          example: pallets/flask
+        rating:
+          type: string
