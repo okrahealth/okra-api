@@ -30,11 +30,6 @@ class RepositoryView(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = RepositoryFilterSet
 
-class RepositoryViewSet(viewsets.ModelViewSet):
-    """
-    List of repositories available
-    """
-    
 
 class RepositoryMetricsViewSet(viewsets.ModelViewSet):
     """
