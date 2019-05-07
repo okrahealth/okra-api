@@ -34,7 +34,7 @@ class RepositoryViewSet(viewsets.ModelViewSet):
     """
     List of repositories available
     """
-    
+    queryset
 
 class RepositoryMetricsViewSet(viewsets.ModelViewSet):
     """

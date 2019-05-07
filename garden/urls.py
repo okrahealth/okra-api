@@ -14,20 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from rest_framework import routers
 
-from pick_okra.views import RepositoryViewSet
+from pick_okra.views import RepositoryView
 from pick_okra.views import RepositoryInfoViewSet
 from pick_okra.views import RepositoryMetricsViewSet
 from pick_okra.views import ContributorViewSet
 
 router = routers.DefaultRouter()
-router.register(r'repository', RepositoryViewSet)
-router.register(r'repository_info', RepositoryInfoViewSet)
-router.register(r'repository_metrics', RepositoryMetricsViewSet)
-router.register(r'contributor', ContributorViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    re_path(r'^repositories/', RepositoryView.as_view()),
 ]
+
+urlpatterns += router.urls
