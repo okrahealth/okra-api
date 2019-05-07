@@ -9,7 +9,7 @@ from pick_okra.models import RepositoryMetrics
 class RepositorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Repository
-        fields = ['repo_id']
+        fields = '__all__'
 
 class RepositoryMetricsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

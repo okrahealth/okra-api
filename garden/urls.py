@@ -17,15 +17,15 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from rest_framework import routers
 
-from pick_okra.views import RepositoryView
+from pick_okra.views import RepositoryViewSet
 from pick_okra.views import RepositoryInfoViewSet
 from pick_okra.views import RepositoryMetricsViewSet
 from pick_okra.views import ContributorViewSet
 
 router = routers.DefaultRouter()
+router.register(r'repository', RepositoryViewSet)
+router.register(r'repoinfo', RepositoryInfoViewSet)
 
 urlpatterns = [
-    re_path(r'^repositories/', RepositoryView.as_view()),
+    path('', include(router.urls)),
 ]
-
-urlpatterns += router.urls

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, viewsets
+from django_filters import rest_framework as filters
 
 from pick_okra.models import Contributor
 from pick_okra.models import Repository
@@ -11,25 +12,13 @@ from pick_okra.serializers import RepositorySerializer
 from pick_okra.serializers import RepositoryInfoSerializer
 from pick_okra.serializers import RepositoryMetricsSerializer
 
-class RepositoryFilterSet(filters.FilterSet):
-    repo_id = filters.CharFilter(field_name='repo_id')
-    
-    class Meta:
-        model = Repository
-        fields = ['repo_id',]
-        
 
-class RepositoryView(generics.ListAPIView):
-    """
-    API endpoint that all repo_id: pallet/flask
-
-    https://www.django-rest-framework.org/api-guide/filtering/
-    """
+class RepositoryViewSet(viewsets.ModelViewSet):
     queryset = Repository.objects.all()
     serializer_class = RepositorySerializer
+    http_method_names = ['get']
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_class = RepositoryFilterSet
-
+    filter_fields = ('repo_id',)
 
 class RepositoryMetricsViewSet(viewsets.ModelViewSet):
     """
@@ -54,4 +43,6 @@ class RepositoryInfoViewSet(viewsets.ModelViewSet):
     queryset = RepositoryInfo.objects.all()
     serializer_class = RepositoryInfoSerializer
     http_method_names = ['get']
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('repo_id',)
     

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     # Django contribs
     'rest_framework',
+    'django_filters',
 
     # Custom apps
     'pick_okra',
