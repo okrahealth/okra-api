@@ -11,8 +11,7 @@ RESTful API for okra.
 ### Step 2: Install dependencies
 
 ```shell
-pipenv install
-python setup.py install
+pipenv install --dev
 ```
 
 ### Step 3: Start pipenv shell
